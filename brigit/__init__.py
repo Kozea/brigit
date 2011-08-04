@@ -22,9 +22,12 @@ class RawGit(object):
         """Init a Git wrapper with an instance"""
         self.path = git_path
 
-    def __call__(self, command, *args):
+    def __call__(self, command, *args, **kwargs):
         """Run a command with args as arguments."""
-        full_command = ('git', command) + args
+        full_command = ('git', command) + args + tuple(
+            ("--%s=%s" % (key, value)
+             if len(key) > 1
+             else "-%s=%s" % (key, value)) for key, value in kwargs.items())
         self.logger.info("Running %s" % ' '.join(full_command))
         process = Popen(full_command, stdout=PIPE, stderr=PIPE, cwd=self.path)
         out, err = process.communicate()
@@ -38,7 +41,7 @@ class RawGit(object):
 
     def __getattr__(self, name):
         """Any method not implemented will be executed as is."""
-        return lambda *args: self(name, *args)
+        return lambda *args, **kwargs: self(name, *args, **kwargs)
 
 
 class Git(RawGit):
