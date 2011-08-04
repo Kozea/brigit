@@ -29,15 +29,7 @@ options = dict(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.1",
-        "Programming Language :: Python :: 3.2",
         "Topic :: Software Development :: Libraries :: Python Modules"])
-
-if sys.version_info >= (3,):
-    options['use_2to3'] = True
 
 setup(**options)
