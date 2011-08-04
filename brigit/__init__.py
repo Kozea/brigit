@@ -16,22 +16,33 @@ from brigit.log import get_default_handler
 from datetime import datetime
 
 
+class NullHandler(logging.Handler):
+    def emit(self, record):
+        """Do nothing"""
+
+
 class RawGit(object):
     """Git command wrapper"""
 
-    def __init__(self, git_path):
+    def __init__(self, git_path, encoding="utf-8"):
         """Init a Git wrapper with an instance"""
         self.path = git_path
+        self.encoding = encoding
 
     def __call__(self, command, *args, **kwargs):
         """Run a command with args as arguments."""
-        full_command = ('git', command) + args + tuple(
-            ("--%s=%s" % (key, value)
-             if len(key) > 1
-             else "-%s=%s" % (key, value)) for key, value in kwargs.items())
-        self.logger.info("Running %s" % ' '.join(full_command))
+        full_command = (('git', command) +
+                        args +
+                        tuple((u"--%s=%s" % (key, value)
+                               if len(key) > 1
+                               else u"-%s %s" % (
+                                   key, value))
+                              for key, value in kwargs.items()))
+        self.logger.info(u"Running %s" % u' '.join(full_command))
         process = Popen(full_command, stdout=PIPE, stderr=PIPE, cwd=self.path)
         out, err = process.communicate()
+        out = out.decode(self.encoding)
+        err = err.decode(self.encoding)
         self.logger.debug("Command stdout: %s" % out)
         retcode = process.poll()
         if retcode:
@@ -61,6 +72,8 @@ class Git(RawGit):
         if not quiet:
             self.logger.addHandler(get_default_handler())
             self.logger.setLevel(logging.DEBUG)
+        else:
+            self.logger.addHandler(NullHandler())
 
         if not os.path.exists(self.path):
             # Non existing repository

@@ -31,5 +31,7 @@ git.pull()
 open(os.path.expanduser("~/brigit/clone_of_brigit/myNewFile"), "a+").close()
 git.add("myNewFile")
 git.commit("-a", message="Adding myNewFile")
+# There's also some utils command:
+git.pretty_log()
 git.push() # if you have push rights
 ```
