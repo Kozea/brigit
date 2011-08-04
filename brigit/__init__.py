@@ -25,7 +25,7 @@ class RawGit(object):
     def __call__(self, command, *args):
         """Run a command with args as arguments."""
         full_command = ('git', command) + args
-        self.logger.info("Running git %s" % ' '.join(full_command))
+        self.logger.info("Running %s" % ' '.join(full_command))
         process = Popen(full_command, stdout=PIPE, stderr=PIPE, cwd=self.path)
         out, err = process.communicate()
         self.logger.debug("Command stdout: %s" % out)
@@ -44,7 +44,7 @@ class RawGit(object):
 class Git(RawGit):
     """Utility class overloading most used functions"""
 
-    def __init__(self, git_path, remote=None, quiet=False):
+    def __init__(self, git_path, remote=None, quiet=True):
         """Init the repo or clone the remote if remote is not None."""
         super(Git, self).__init__(git_path)
 
