@@ -13,6 +13,7 @@ from logging import getLogger
 import os
 from subprocess import Popen, CalledProcessError, PIPE
 from brigit.log import get_default_handler
+from datetime import datetime
 
 
 class RawGit(object):
@@ -73,3 +74,17 @@ class Git(RawGit):
                 os.makedirs(self.path)
                 self.init()
         self.remote = remote
+
+    def pretty_log(self, *args, **kwargs):
+        """Return the log as a list of dict"""
+        kwargs["pretty"] = "format:%H;;%an;;%ae;;%at;;%s"
+        for line in self.log(*args, **kwargs).split("\n"):
+            fields = line.split(";;")
+            yield {
+                'hash': fields[0],
+                'author': {
+                    'name': fields[1],
+                    'email': fields[2]},
+                'datetime': datetime.fromtimestamp(float(fields[3])),
+                'message': fields[4]
+            }
