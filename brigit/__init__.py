@@ -20,23 +20,51 @@ briGit - Very simple git wrapper module
 
 """
 
+import logging
+from logging import getLogger
 import os
-from subprocess import check_output
+from subprocess import Popen, CalledProcessError, PIPE
+from brigit.log import get_default_handler
 
 
 class Git(object):
     """Git command wrapper"""
+
     def __init__(self, git_path, remote=None):
         """Init the repo or clone the remote if remote is not None."""
         self.path = git_path
+        dirpath = os.path.dirname(self.path)
+        basename = os.path.basename(self.path)
+        self.logger = getLogger("brigit")
+        self.logger.addHandler(get_default_handler())
+        self.logger.setLevel(logging.DEBUG)
+
         if not os.path.exists(self.path):
-            os.makedirs(self.path)
+            # Non existing repository
+            if remote:
+                if not os.path.exists(dirpath):
+                    os.makedirs(dirpath)
+                self.path = dirpath
+                self.clone(remote, basename)
+                self.path = git_path
+            else:
+                os.makedirs(self.path)
+                self.init()
         self.remote = remote
 
     def __call__(self, command, *args):
         """Run a command with args as arguments."""
-        return check_output(("git", command) + args,
-                         cwd=self.path)
+        full_command = ('git', command) + args
+        self.logger.info("Running git %s" % ' '.join(full_command))
+        process = Popen(full_command, stdout=PIPE, stderr=PIPE, cwd=self.path)
+        out, err = process.communicate()
+        self.logger.debug("Command stdout: %s" % out)
+        if err:
+            self.logger.error("Commad stderr: %s" % err)
+        retcode = process.poll()
+        if retcode:
+            raise CalledProcessError(retcode, full_command, out)
+        return out
 
     def __getattr__(self, name):
         """Any method not implemented will be executed as is."""
