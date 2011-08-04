@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2011 by Florian Mounier, Kozea
+# This file is part of brigit, licensed under a 3-clause BSD license.
 """
 Brigit logger
 

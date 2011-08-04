@@ -1,19 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2011 by Florian Mounier, Kozea
-#
-# This library is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with brigit.  If not, see <http://www.gnu.org/licenses/>.
+# This file is part of brigit, licensed under a 3-clause BSD license.
 
 """
 briGit - Very simple git wrapper module
@@ -27,30 +15,12 @@ from subprocess import Popen, CalledProcessError, PIPE
 from brigit.log import get_default_handler
 
 
-class Git(object):
+class RawGit(object):
     """Git command wrapper"""
 
-    def __init__(self, git_path, remote=None):
-        """Init the repo or clone the remote if remote is not None."""
+    def __init__(self, git_path):
+        """Init a Git wrapper with an instance"""
         self.path = git_path
-        dirpath = os.path.dirname(self.path)
-        basename = os.path.basename(self.path)
-        self.logger = getLogger("brigit")
-        self.logger.addHandler(get_default_handler())
-        self.logger.setLevel(logging.DEBUG)
-
-        if not os.path.exists(self.path):
-            # Non existing repository
-            if remote:
-                if not os.path.exists(dirpath):
-                    os.makedirs(dirpath)
-                self.path = dirpath
-                self.clone(remote, basename)
-                self.path = git_path
-            else:
-                os.makedirs(self.path)
-                self.init()
-        self.remote = remote
 
     def __call__(self, command, *args):
         """Run a command with args as arguments."""
@@ -69,3 +39,31 @@ class Git(object):
     def __getattr__(self, name):
         """Any method not implemented will be executed as is."""
         return lambda *args: self(name, *args)
+
+
+class Git(RawGit):
+    """Utility class overloading most used functions"""
+
+    def __init__(self, git_path, remote=None, quiet=False):
+        """Init the repo or clone the remote if remote is not None."""
+        super(Git, self).__init__(git_path)
+
+        dirpath = os.path.dirname(self.path)
+        basename = os.path.basename(self.path)
+        self.logger = getLogger("brigit")
+        if not quiet:
+            self.logger.addHandler(get_default_handler())
+            self.logger.setLevel(logging.DEBUG)
+
+        if not os.path.exists(self.path):
+            # Non existing repository
+            if remote:
+                if not os.path.exists(dirpath):
+                    os.makedirs(dirpath)
+                self.path = dirpath
+                self.clone(remote, basename)
+                self.path = git_path
+            else:
+                os.makedirs(self.path)
+                self.init()
+        self.remote = remote
