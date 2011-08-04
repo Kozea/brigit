@@ -27,6 +27,8 @@ git = Git("~/brigit/clone_of_brigit",
 
 # Then you can use all of your git command like this:
 git.pull()
+# Touch a new file
+open(os.path.expanduser("~/brigit/clone_of_brigit/myNewFile"), "a+").close()
 git.add("myNewFile")
 git.commit("-a", message="Adding myNewFile")
 git.push() # if you have push rights
