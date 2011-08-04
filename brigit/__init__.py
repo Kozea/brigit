@@ -21,6 +21,8 @@ class RawGit(object):
     def __init__(self, git_path):
         """Init a Git wrapper with an instance"""
         self.path = git_path
+        if "~" in self.path:
+            self.path = os.path.expanduser(self.path)
 
     def __call__(self, command, *args, **kwargs):
         """Run a command with args as arguments."""
@@ -32,10 +34,10 @@ class RawGit(object):
         process = Popen(full_command, stdout=PIPE, stderr=PIPE, cwd=self.path)
         out, err = process.communicate()
         self.logger.debug("Command stdout: %s" % out)
-        if err:
-            self.logger.error("Commad stderr: %s" % err)
         retcode = process.poll()
         if retcode:
+            if err:
+                self.logger.error("Command stderr: %s" % err)
             raise CalledProcessError(retcode, full_command, out)
         return out
 
