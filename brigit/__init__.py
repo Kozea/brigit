@@ -21,8 +21,6 @@ class RawGit(object):
     def __init__(self, git_path):
         """Init a Git wrapper with an instance"""
         self.path = git_path
-        if "~" in self.path:
-            self.path = os.path.expanduser(self.path)
 
     def __call__(self, command, *args, **kwargs):
         """Run a command with args as arguments."""
@@ -51,6 +49,9 @@ class Git(RawGit):
 
     def __init__(self, git_path, remote=None, quiet=True):
         """Init the repo or clone the remote if remote is not None."""
+        if "~" in git_path:
+            git_path = os.path.expanduser(git_path)
+
         super(Git, self).__init__(git_path)
 
         dirpath = os.path.dirname(self.path)
