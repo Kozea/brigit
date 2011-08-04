@@ -5,7 +5,6 @@
 briGit - Very simple git wrapper module
 """
 
-import sys
 from setuptools import setup, find_packages
 
 # Use a time-based version number with ridiculous precision as pip in tox
