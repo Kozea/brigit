@@ -8,8 +8,7 @@ Brigit logger
 import sys
 import logging
 
-from logging.handlers import SysLogHandler
-from logging import StreamHandler, getLogger
+from logging import StreamHandler
 
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
 COLORS = {
