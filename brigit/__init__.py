@@ -58,7 +58,7 @@ class RawGit(object):
                 self.logger.error("%s" % err)
             raise GitException(
                 "%s has returned %d - error was %s" % (
-                    full_command, retcode, err))
+                    ' '.join(full_command), retcode, err))
         return out
 
     def __getattr__(self, name):
