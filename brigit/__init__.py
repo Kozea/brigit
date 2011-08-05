@@ -17,8 +17,16 @@ from datetime import datetime
 
 
 class NullHandler(logging.Handler):
+    """Handler that do nothing"""
     def emit(self, record):
         """Do nothing"""
+
+
+class GitException(Exception):
+    """Exception raised when something went wrong for git"""
+
+    def __init__(self, message):
+        super(GitException, self).__init__(message)
 
 
 class RawGit(object):
@@ -48,7 +56,9 @@ class RawGit(object):
         if retcode:
             if err:
                 self.logger.error("%s" % err)
-            raise CalledProcessError(retcode, full_command, out)
+            raise GitException(
+                "%s has returned %d - error was %s" % (
+                    full_command, retcode, err))
         return out
 
     def __getattr__(self, name):
