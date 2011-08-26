@@ -12,7 +12,7 @@ import logging
 from logging import getLogger
 import os
 from subprocess import Popen, CalledProcessError, PIPE
-from brigit.log import get_default_handler
+from log_colorizer import make_colored_stream_handler
 from datetime import datetime
 
 
@@ -80,7 +80,7 @@ class Git(RawGit):
         basename = os.path.basename(self.path)
         self.logger = getLogger("brigit")
         if not quiet:
-            self.logger.addHandler(get_default_handler())
+            self.logger.addHandler(make_colored_stream_handler())
             self.logger.setLevel(logging.DEBUG)
         else:
             self.logger.addHandler(NullHandler())
