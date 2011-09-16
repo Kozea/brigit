@@ -1,7 +1,7 @@
 briGit
 ======
 
-Very simple git wrapper module licensed under BSD    
+Very simple git wrapper module licensed under BSD
 Copyright (C) 2011 by Florian Mounier, Kozea
 
 
@@ -10,7 +10,7 @@ Installation
 
 Use pip :
 
-    pip install git+git://github.com/paradoxxxzero/brigit.git
+    pip install git+git://github.com/Kozea/brigit.git
 
 And that's all.
 
@@ -22,8 +22,8 @@ Usage
 from brigit import Git
 new_repo = Git("~/brigit/new_repo")  # Will do a git init
 git = Git("~/brigit/clone_of_brigit",
-    "git://github.com/paradoxxxzero/brigit.git",
-     quiet=False)  # Will do a git clone git://github.com/paradoxxxzero/brigit.git
+    "git://github.com/Kozea/brigit.git",
+     quiet=False)  # Will do a git clone git://github.com/Kozea/brigit.git
 
 # Then you can use all of your git command like this:
 git.pull()
