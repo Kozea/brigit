@@ -96,7 +96,7 @@ class Git(RawGit):
             else:
                 os.makedirs(self.path)
                 self.init()
-        self.remote = remote
+        self.remote_path = remote
 
     def pretty_log(self, *args, **kwargs):
         """Return the log as a list of dict"""
