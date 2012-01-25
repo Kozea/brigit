@@ -69,7 +69,7 @@ class RawGit(object):
 class Git(RawGit):
     """Utility class overloading most used functions"""
 
-    def __init__(self, git_path, remote=None, quiet=True):
+    def __init__(self, git_path, remote=None, quiet=True, bare=False):
         """Init the repo or clone the remote if remote is not None."""
         if "~" in git_path:
             git_path = os.path.expanduser(git_path)
@@ -95,7 +95,7 @@ class Git(RawGit):
                 self.path = git_path
             else:
                 os.makedirs(self.path)
-                self.init()
+                self.init('--bare' if bare else '')
         self.remote_path = remote
 
     def pretty_log(self, *args, **kwargs):
