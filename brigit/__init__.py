@@ -95,7 +95,10 @@ class Git(RawGit):
                 self.path = git_path
             else:
                 os.makedirs(self.path)
-                self.init('--bare' if bare else '')
+                if bare:
+                    self.init('--bare')
+                else:
+                    self.init()
         self.remote_path = remote
 
     def pretty_log(self, *args, **kwargs):
