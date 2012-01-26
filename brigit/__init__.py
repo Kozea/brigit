@@ -11,9 +11,15 @@ briGit - Very simple git wrapper module
 import logging
 from logging import getLogger
 import os
-from subprocess import Popen, CalledProcessError, PIPE
-from log_colorizer import make_colored_stream_handler
+from subprocess import Popen, PIPE
 from datetime import datetime
+
+handler = None
+try:
+    from log_colorizer import make_colored_stream_handler
+    handler = make_colored_stream_handler()
+except ImportError:
+    handler = logging.StreamHandler()
 
 
 class NullHandler(logging.Handler):
@@ -80,7 +86,7 @@ class Git(RawGit):
         basename = os.path.basename(self.path)
         self.logger = getLogger("brigit")
         if not quiet:
-            self.logger.addHandler(make_colored_stream_handler())
+            self.logger.addHandler(handler)
             self.logger.setLevel(logging.DEBUG)
         else:
             self.logger.addHandler(NullHandler())
