@@ -23,7 +23,6 @@ options = dict(
     license="BSD",
     platforms="Any",
     packages=find_packages(),
-    install_requires=['log_colorizer'],
     classifiers=[
         "Development Status :: WIP",
         "Intended Audience :: Developers",
