@@ -7,10 +7,7 @@ briGit - Very simple git wrapper module
 
 from setuptools import setup, find_packages
 
-# Use a time-based version number with ridiculous precision as pip in tox
-# does not reinstall the same version.
-import datetime
-VERSION = "git-" + datetime.datetime.now().isoformat()
+VERSION = '1.0'
 
 
 options = dict(
@@ -24,7 +21,7 @@ options = dict(
     platforms="Any",
     packages=find_packages(),
     classifiers=[
-        "Development Status :: WIP",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
