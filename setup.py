@@ -19,6 +19,8 @@ options = dict(
     author_email="florian.mounier@kozea.fr",
     license="BSD",
     platforms="Any",
+    install_requires=['log_colorizer'],
+    provides=['brigit'],
     packages=find_packages(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
