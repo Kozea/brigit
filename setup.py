@@ -7,7 +7,7 @@ briGit - Very simple git wrapper module
 
 from setuptools import setup, find_packages
 
-VERSION = '1.0'
+VERSION = '1.2'
 
 
 options = dict(
