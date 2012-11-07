@@ -96,7 +96,8 @@ class Git(RawGit):
                 if not os.path.exists(dirpath):
                     os.makedirs(dirpath)
                 self.path = dirpath
-                self.clone(remote, basename)
+                # The '--recursive' option will clone all submodules, if any
+                self.clone(remote, basename, '--recursive')
                 self.path = git_path
             else:
                 os.makedirs(self.path)
