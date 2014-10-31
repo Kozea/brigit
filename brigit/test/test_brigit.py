@@ -22,5 +22,5 @@ def test_basic():
     assert len(list(git.pretty_log())) == 2
     git.reset("HEAD~1")
     assert len(list(git.pretty_log())) == 1
-    assert "Untracked files:\n#\tfile_2" in git.status()
+    assert "Untracked files:\n\tfile_2" in git.status()
     shutil.rmtree("/tmp/brigit_test")
