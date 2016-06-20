@@ -1,6 +1,8 @@
+image: python:3.5
+
 test:
   script:
   - apt-get update -qy
-  - apt-get install -y python-dev python-pip python-tox
+  - apt-get install -y python-dev python-pip python-setuptools python-tox
   # - pip install -r requirements.txt
   - tox
