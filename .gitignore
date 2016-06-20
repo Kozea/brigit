@@ -1,8 +1,9 @@
 *.pyc
+*.pyo
+__pycache__/
 *.egg-info
-.tox
-dist
 .cache
 .coverage
 .eggs
+dist
 build
