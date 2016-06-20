@@ -11,7 +11,7 @@ before_script:
 .test_template: &test_job
   script:
     - pip install coverage
-    - coverage run --parallel-mode setup.py test
+    - coverage run --parallel-mode --source brigit setup.py test
   artifacts:
     paths:
       - .coverage.*
