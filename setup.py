@@ -22,6 +22,9 @@ options = dict(
     install_requires=['log_colorizer'],
     provides=['brigit'],
     packages=find_packages(),
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
+    test_suite='brigit.test',
     use_2to3=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

@@ -1,8 +1,29 @@
-image: python:3.5
-
-test:
+.test_template: &test_job
+  tags:
+    - docker
   script:
-  - apt-get update -qy
-  - apt-get install -y python-dev python-pip python-setuptools python-tox
-  # - pip install -r requirements.txt
-  - tox
+    - pip install coverage
+    - coverage run --parallel-mode setup.py test
+  artifacts:
+    paths:
+      - .coverage.*
+
+python 2.6:
+  image: python:2.7
+  <<: *test_job
+
+python 2.7:
+  image: python:2.7
+  <<: *test_job
+
+python 3.3:
+  image: python:3.3
+  <<: *test_job
+
+python 3.4:
+  image: python:3.4
+  <<: *test_job
+
+python 3.5:
+  image: python:3.5
+  <<: *test_job
