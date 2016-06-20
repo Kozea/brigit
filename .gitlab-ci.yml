@@ -8,10 +8,6 @@ before_script:
   script:
     - python setup.py test
 
-python 2.6:
-  image: python:2.6
-  <<: *test
-
 python 2.7:
   image: python:2.7
   <<: *test
