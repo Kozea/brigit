@@ -2,3 +2,7 @@
 *.egg-info
 .tox
 dist
+.cache
+.coverage
+.eggs
+build

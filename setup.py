@@ -5,7 +5,7 @@
 briGit - Very simple git wrapper module
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 VERSION = '1.2'
 
@@ -23,7 +23,7 @@ options = dict(
     provides=['brigit'],
     packages=find_packages(),
     setup_requires=['pytest-runner'],
-    tests_require=['pytest', 'pytest-cov', 'pytest-flake8'],
+    tests_require=['pytest', 'pytest-cov', 'pytest-flake8', 'pytest-isort'],
     test_suite='brigit.test',
     use_2to3=True,
     classifiers=[
