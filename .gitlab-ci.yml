@@ -1,3 +1,8 @@
+before_script:
+  # This is mandatory for brigit to work
+  - git config --global user.email "gitlab-runner@exemple.com"
+  - git config --global user.name "Gitlab Runner"
+
 .test_template: &test_job
   tags:
     - docker
