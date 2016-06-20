@@ -1,56 +1,29 @@
-stages:
-  - test
-  - pre-deploy
-
 before_script:
   # This is mandatory for brigit to work
   - git config --global user.email "gitlab-runner@exemple.com"
   - git config --global user.name "Gitlab Runner"
   - git config --global advice.statusHints false
 
-.test_template: &test_job
+.test_template: &test
   script:
-    - pip install coverage
-    - coverage run --parallel-mode --source brigit setup.py test
-  artifacts:
-    paths:
-      - .coverage.*
+    - python setup.py test
 
 python 2.6:
   image: python:2.7
-  <<: *test_job
+  <<: *test
 
 python 2.7:
   image: python:2.7
-  <<: *test_job
+  <<: *test
 
 python 3.3:
   image: python:3.3
-  <<: *test_job
+  <<: *test
 
 python 3.4:
   image: python:3.4
-  <<: *test_job
+  <<: *test
 
 python 3.5:
   image: python:3.5
-  <<: *test_job
-
-flake8:
-  image: python:3.5
-  script:
-    - pip install pytest-flake8
-    - pip install -e .
-    - py.test --flake8 -m flake8
-
-coverage:
-  stage: pre-deploy
-  image: python:3.5
-  script:
-    - pip install coverage
-    - coverage combine
-    - coverage html
-    - coverage report
-  artifacts:
-    paths:
-      - htmlcov
+  <<: *test
