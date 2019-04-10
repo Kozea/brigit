@@ -24,4 +24,13 @@ def test_basic():
     git.reset("HEAD~1")
     assert len(list(git.pretty_log())) == 1
     assert "Untracked files:\n\tfile_2" in git.status()
+    git.clean("-fdx")
+    git.branch("newbranch")
+    with open("/tmp/brigit_test/file_3", "w") as f:
+        f.write('3')
+    git.add("/tmp/brigit_test/file_3")
+    git.commit(message="Adding file_3")
+    assert "Adding file_3" in git.log()
+    git.checkout("newbranch")
+    git.cherryPick("master")
     shutil.rmtree("/tmp/brigit_test")

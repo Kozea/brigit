@@ -8,10 +8,11 @@ briGit - Very simple git wrapper module
 """
 
 import logging
-from logging import getLogger
 import os
-from subprocess import Popen, PIPE
+import re
 from datetime import datetime
+from logging import getLogger
+from subprocess import PIPE, Popen
 
 handler = None
 try:
@@ -19,6 +20,10 @@ try:
     handler = make_colored_stream_handler()
 except ImportError:
     handler = logging.StreamHandler()
+
+
+def kebab_case(s):
+    return re.sub('([A-Z]+)', r'-\1', s).lower()
 
 
 class NullHandler(logging.Handler):
@@ -44,7 +49,7 @@ class RawGit(object):
 
     def __call__(self, command, *args, **kwargs):
         """Run a command with args as arguments."""
-        full_command = (('git', command) +
+        full_command = (('git', kebab_case(command)) +
                         tuple((u"--%s=%s" % (key, value)
                                if len(key) > 1
                                else u"-%s %s" % (
